@@ -1,8 +1,8 @@
 #include "searchContact.h"
 
-int searchContact(AddressBook *addressBook, int searchOption){
+int searchContact(AddressBook *addressBook, int searchOption, char *multipleMatchFoundName){
 
-    int searchResult = 1;
+    int searchResult = -1;
 
     switch(searchOption){
         case SEARCH_BY_NAME:
@@ -10,7 +10,10 @@ int searchContact(AddressBook *addressBook, int searchOption){
             char nameToSearch[USERNAME_SIZE];
             printf("Enter the user name to search: ");
             scanf("%30[^\n]", nameToSearch);
-            searchByName(addressBook, nameToSearch);
+            searchResult = searchByName(addressBook, nameToSearch);
+            if(searchResult == -2){
+                strcpy(multipleMatchFoundName, nameToSearch);
+            }
             break;
 
         case SEARCH_BY_PHONENUMBER:
@@ -18,7 +21,7 @@ int searchContact(AddressBook *addressBook, int searchOption){
             char phoneNumberToSearch[USERPHONENUMBER_SIZE];
             printf("Enter the phone number to search: ");
             scanf("%10[^\n]", phoneNumberToSearch);
-            searchByPhoneNumber(addressBook, phoneNumberToSearch);
+            searchResult = searchByPhoneNumber(addressBook, phoneNumberToSearch);
             break;
 
         case SEARCH_BY_EMAILID:
@@ -26,22 +29,22 @@ int searchContact(AddressBook *addressBook, int searchOption){
             char emailIdToSerach[USEREMAILID_SIZE];
             printf("Enter the email id to search: ");
             scanf("%50[^\n]", emailIdToSerach);
-            searchByEmailId(addressBook, emailIdToSerach);
+            searchResult = searchByEmailId(addressBook, emailIdToSerach);
             break;
 
         default:
-            searchResult = 0;
+            searchResult = -3;
     }
 
     return searchResult;
 }
 
-void searchByName(AddressBook *addressBook, char *nameToSerach){
+int searchByName(AddressBook *addressBook, char *nameToSerach){
     int iter = 0;
 
     printf("Serached by name as \"%s\":\n", nameToSerach);
 
-    int matchCount = 0;
+    int matchCount = 0, foundIndex = -1;
 
     while(iter < addressBook->contactCount){
 
@@ -53,17 +56,23 @@ void searchByName(AddressBook *addressBook, char *nameToSerach){
             printf("PhoneNumber: %s\n", ((addressBook->contactsBook)[iter]).userPhoneNumber);
             printf("EmailId: %s\n", ((addressBook->contactsBook)[iter]).userEmailId);
             matchCount++;
+            foundIndex = iter;
         }
 
         iter++;
     }
 
     if(!matchCount){
-        printf("-No Match Found with this name\n");
+        printf("No Match Found with this name\n");
+        return -1;
+    } else if(matchCount == 1){
+        return foundIndex;
     }
+    
+    return -2;
 }
 
-void searchByPhoneNumber(AddressBook *addressBook, char *phoneNumberToSerach){
+int searchByPhoneNumber(AddressBook *addressBook, char *phoneNumberToSerach){
     int iter = 0;
 
     printf("Serached by phone number as \"%s\":\n", phoneNumberToSerach);
@@ -84,10 +93,13 @@ void searchByPhoneNumber(AddressBook *addressBook, char *phoneNumberToSerach){
 
     if(iter == addressBook->contactCount){
         printf("No Match Found with this phone number\n");
+        return -1;
     }
+
+    return iter;
 }
 
-void searchByEmailId(AddressBook *addressBook, char *emailIdToSerach){
+int searchByEmailId(AddressBook *addressBook, char *emailIdToSerach){
     int iter = 0;
 
     printf("Serached by email id as \"%s\":\n", emailIdToSerach);
@@ -108,5 +120,30 @@ void searchByEmailId(AddressBook *addressBook, char *emailIdToSerach){
 
     if(iter == addressBook->contactCount){
         printf("No Match Found with this email\n");
+        return -1;
     }
+
+    return iter;
+}
+
+int findNthIndexOfName(AddressBook *addressBook, char *multipleMatchFoundName, int n){
+    int iter = 0, numberOfTimesFound = 0, indexFound;
+
+    while(iter < addressBook->contactCount){
+
+        int checkDiff = strcmp(multipleMatchFoundName, ((addressBook->contactsBook)[iter]).userName);
+
+        if(!checkDiff){
+            numberOfTimesFound++;
+        }
+
+        if(numberOfTimesFound == n){
+            indexFound = iter;
+            break;
+        }
+
+        iter++;
+    }
+
+    return indexFound;
 }

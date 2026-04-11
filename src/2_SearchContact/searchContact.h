@@ -7,6 +7,6 @@
 #define SEARCH_BY_PHONENUMBER 2
 #define SEARCH_BY_EMAILID 3
 
-void searchByName(AddressBook *, char *);
-void searchByPhoneNumber(AddressBook *, char *);
-void searchByEmailId(AddressBook *, char *);
+int searchByName(AddressBook *, char *);
+int searchByPhoneNumber(AddressBook *, char *);
+int searchByEmailId(AddressBook *, char *);

@@ -4,7 +4,22 @@ int main(){
 
     AddressBook addressBook;
     addressBook.contactCount = 0;
+
+    strcpy(((addressBook.contactsBook)[0]).userName, "Balaji S");
+    strcpy(((addressBook.contactsBook)[0]).userPhoneNumber, "7397644597");
+    strcpy(((addressBook.contactsBook)[0]).userEmailId, "balajis07032005@gmail.com");
+    strcpy(((addressBook.contactsBook)[1]).userName, "Balaji S");
+    strcpy(((addressBook.contactsBook)[1]).userPhoneNumber, "1234567890");
+    strcpy(((addressBook.contactsBook)[1]).userEmailId, "balajis@gmail.com");
+    strcpy(((addressBook.contactsBook)[2]).userName, "Balaji S");
+    strcpy(((addressBook.contactsBook)[2]).userPhoneNumber, "0987654321");
+    strcpy(((addressBook.contactsBook)[2]).userEmailId, "balajis12345@gmail.com");
+
+    addressBook.contactCount = 3;
+
     int userChoice;
+    int searchResult;
+    char multipleMatchFoundName[USERNAME_SIZE];
 
     do {
         displayChoice();
@@ -19,24 +34,48 @@ int main(){
 
             case SEARCH_CONTACT:
                 // Search
-                int searchOption;
-                displaySearchChoice();
-                getSearchChoice(&searchOption);
-
-                int searchResult = searchContact(&addressBook, searchOption);
-                while(!searchResult){
-                    printf("Invalid Search Choice! Please choose the search choice again.\n");
-                    displaySearchChoice();
-                    getSearchChoice(&searchOption);
-                    searchResult = searchContact(&addressBook, searchOption);
-                }
+                performSearch(&addressBook, &searchResult, multipleMatchFoundName);
                 break;
 
             case EDIT_CONTACT:
                 // Edit
+                printf("First Search the Contact to Edit:\n");
+                performSearch(&addressBook, &searchResult, multipleMatchFoundName);
+
+                while(searchResult == SEARCH_RESULT_NOT_FOUND){
+                    performSearch(&addressBook, &searchResult, multipleMatchFoundName);
+                }
+
+                int editContactIndex;
+
+                if(searchResult == SERACH_RESULT_MULTIPLE_MATCHES){
+                    //Name Multiple found
+                    int editSerialNumber;
+                    printf("\nMultiple Matches found, Please Enter the number of which contact to edit: ");
+                    scanf("%d", &editSerialNumber);
+                    editContactIndex = findNthIndexOfName(&addressBook, multipleMatchFoundName, editSerialNumber);
+                } else {
+                    editContactIndex = searchResult;
+                }
+
+                int editMemberIndex;
+                displayEditChoice();
+                scanf("%d", &editMemberIndex);
+                __fpurge(stdin);
+
+                while(editMemberIndex < 1 && editMemberIndex > 3){
+                    printf("Invalid Edit Option, please choose edit option again\n");
+                    displayEditChoice();
+                    scanf("%d", &editMemberIndex);
+                    __fpurge(stdin);
+                }
+
+                editContact(&addressBook, editContactIndex, editMemberIndex);
+                break;
 
             case DELETE_CONTACT:
                 // Delete
+                break;
 
             case LIST_CONTACT:
                 // List
@@ -77,4 +116,26 @@ void displaySearchChoice(){
 void getSearchChoice(int *searchOption){
     scanf("%d", searchOption);
     __fpurge(stdin);
+}
+
+void performSearch(AddressBook *addressBook, int *searchResult, char *multipleMatchFoundName){
+    int searchOption;
+    displaySearchChoice();
+    getSearchChoice(&searchOption);
+
+    *searchResult = searchContact(addressBook, searchOption, multipleMatchFoundName);
+    while(*searchResult == SEARCH_RESULT_INVALID_OPTION){
+        printf("Invalid Search Choice! Please choose the search choice again.\n");
+        displaySearchChoice();
+        getSearchChoice(&searchOption);
+        *searchResult = searchContact(addressBook, searchOption, multipleMatchFoundName);
+    }
+}
+
+void displayEditChoice(){
+    printf("\nOptions to Edit:\n");
+    printf("1 - Edit by Name\n");
+    printf("2 - Edit by Phone Number\n");
+    printf("3 - Edit by Email Id\n");
+    printf("Enter your choice for edit: ");
 }
