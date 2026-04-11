@@ -26,3 +26,5 @@ int searchContact(AddressBook *, int, char *); // SEARCH
 int findNthIndexOfName(AddressBook *, char *,int);
 void displayEditChoice();
 void editContact(AddressBook *, int , int);
+void displayDeleteChoice();
+void deleteContact(AddressBook *, int);

@@ -75,6 +75,26 @@ int main(){
 
             case DELETE_CONTACT:
                 // Delete
+                printf("First Search the Contact to Delete:\n");
+                performSearch(&addressBook, &searchResult, multipleMatchFoundName);
+
+                while(searchResult == SEARCH_RESULT_NOT_FOUND){
+                    performSearch(&addressBook, &searchResult, multipleMatchFoundName);
+                }
+
+                int deleteContactIndex;
+
+                if(searchResult == SERACH_RESULT_MULTIPLE_MATCHES){
+                    //Name Multiple found
+                    int deleteSerialNumber;
+                    printf("\nMultiple Matches found, Please Enter the number of which contact to delete: ");
+                    scanf("%d", &deleteSerialNumber);
+                    deleteContactIndex = findNthIndexOfName(&addressBook, multipleMatchFoundName, deleteSerialNumber);
+                } else {
+                    deleteContactIndex = searchResult;
+                }
+
+                deleteContact(&addressBook, deleteContactIndex);
                 break;
 
             case LIST_CONTACT:
@@ -138,4 +158,12 @@ void displayEditChoice(){
     printf("2 - Edit by Phone Number\n");
     printf("3 - Edit by Email Id\n");
     printf("Enter your choice for edit: ");
+}
+
+void displayDeleteChoice(){
+    printf("\nOptions to Delete:\n");
+    printf("1 - Delete by Name\n");
+    printf("2 - Delete by Phone Number\n");
+    printf("3 - Delete by Email Id\n");
+    printf("Enter your choice for delete: ");
 }
