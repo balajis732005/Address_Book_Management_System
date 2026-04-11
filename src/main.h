@@ -17,14 +17,16 @@
 
 // Function prototypes
 void displayChoice(); // DISPLAY CHOICE
+void displaySearchChoice(); // DISPLAY SEARCH OPTIONS
+void displayEditChoice();
+void displayDeleteChoice();
+
 void createContact(AddressBook *); // CREATE
 void listContacts(AddressBook *); // LIST
-void displaySearchChoice(); // DISPLAY SEARCH OPTIONS
-void getSearchChoice(int *);
 void performSearch(AddressBook *, int *, char *);
+void editContact(AddressBook *, int , int);
+void deleteContact(AddressBook *, int);
+
+void getSearchChoice(int *);
 int searchContact(AddressBook *, int, char *); // SEARCH
 int findNthIndexOfName(AddressBook *, char *,int);
-void displayEditChoice();
-void editContact(AddressBook *, int , int);
-void displayDeleteChoice();
-void deleteContact(AddressBook *, int);
