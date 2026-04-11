@@ -14,3 +14,6 @@
 void displayChoice(); // DISPLAY CHOICE
 void createContact(AddressBook *); // CREATE
 void listContacts(AddressBook *); // LIST
+void displaySearchChoice(); // DISPLAY SEARCH OPTIONS
+void getSearchChoice(int *);
+int searchContact(AddressBook *, int); // SEARCH

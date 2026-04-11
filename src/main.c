@@ -19,6 +19,18 @@ int main(){
 
             case SEARCH_CONTACT:
                 // Search
+                int searchOption;
+                displaySearchChoice();
+                getSearchChoice(&searchOption);
+
+                int searchResult = searchContact(&addressBook, searchOption);
+                while(!searchResult){
+                    printf("Invalid Search Choice! Please choose the search choice again.\n");
+                    displaySearchChoice();
+                    getSearchChoice(&searchOption);
+                    searchResult = searchContact(&addressBook, searchOption);
+                }
+                break;
 
             case EDIT_CONTACT:
                 // Edit
@@ -52,4 +64,17 @@ void displayChoice(){
     printf("5 - List all contacts\n");
     printf("6 - Exit\n");
     printf("Enter your choice: ");
+}
+
+void displaySearchChoice(){
+    printf("\nOptions to Search:\n");
+    printf("1 - Search by name\n");
+    printf("2 - Search by phone number\n");
+    printf("3 - Search by email id\n");
+    printf("Enter your choice for search: ");
+}
+
+void getSearchChoice(int *searchOption){
+    scanf("%d", searchOption);
+    __fpurge(stdin);
 }
