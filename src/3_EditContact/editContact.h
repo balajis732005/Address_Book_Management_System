@@ -8,3 +8,11 @@
 #define EDIT_EMAILID 3
 
 void displayUpdatedData(AddressBook *, int);
+
+void getUpdatedUserName(char *);
+void getUpdatedUserPhoneNumber(char *);
+void getUpdatedUserEmailId(char *);
+
+int validateUserName(char *);
+int validateUserPhoneNumber(char *, AddressBook *);
+int validateUserEmailId(char *, AddressBook *);
