@@ -31,6 +31,10 @@ int main(){
                 listContacts(&addressBook);
                 break;
 
+            case EXIT:
+                printf("\nThank You for using Address Book Management Tool!\n");
+                break;
+
             default:
                 printf("Invalid Choice! Please choose again.\n");
         }
