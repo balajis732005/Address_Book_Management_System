@@ -38,3 +38,4 @@ void performDelete(AddressBook *, int *, char *); // PERFORM DELETE
 void listContacts(AddressBook *); // LIST
 
 void saveContacts(AddressBook *); // SAVE
+void loadContacts(AddressBook *); // LOAD

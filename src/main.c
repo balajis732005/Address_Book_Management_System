@@ -5,17 +5,7 @@ int main(){
     AddressBook addressBook;
     addressBook.contactCount = 0;
 
-    strcpy(((addressBook.contactsBook)[0]).userName, "Balaji S");
-    strcpy(((addressBook.contactsBook)[0]).userPhoneNumber, "7397644597");
-    strcpy(((addressBook.contactsBook)[0]).userEmailId, "balajis07032005@gmail.com");
-    strcpy(((addressBook.contactsBook)[1]).userName, "Balaji S");
-    strcpy(((addressBook.contactsBook)[1]).userPhoneNumber, "1234567890");
-    strcpy(((addressBook.contactsBook)[1]).userEmailId, "balajis@gmail.com");
-    strcpy(((addressBook.contactsBook)[2]).userName, "Balaji S");
-    strcpy(((addressBook.contactsBook)[2]).userPhoneNumber, "0987654321");
-    strcpy(((addressBook.contactsBook)[2]).userEmailId, "balajis12345@gmail.com");
-
-    addressBook.contactCount = 3;
+    loadContacts(&addressBook);
 
     int userChoice;
     int searchResult;
@@ -74,7 +64,7 @@ void displayChoice(){
     printf("3 - Edit contact\n");
     printf("4 - Delete contact\n");
     printf("5 - List all contacts\n");
-    printf("6 - Exit\n");
+    printf("6 - Save & Exit\n");
     printf("Enter your choice: ");
 }
 
