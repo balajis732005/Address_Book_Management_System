@@ -48,6 +48,9 @@ int main(){
 
             // Delete Contact
             case DELETE_CONTACT:
+                printf("------------------------\n");
+                printf("Delete Contact Selected:\n");
+                printf("------------------------\n");
                 performDelete(&addressBook, &searchResult, multipleMatchFoundName);
                 break;
 
@@ -160,7 +163,9 @@ void performEdit(AddressBook *addressBook, int *searchResult, char *multipleMatc
 }
 
 void displayDeleteChoice(){
-    printf("\nOptions to Delete:\n");
+    printf("------------------\n");
+    printf("Options to Delete:\n");
+    printf("------------------\n");
     printf("1 - Delete by Name\n");
     printf("2 - Delete by Phone Number\n");
     printf("3 - Delete by Email Id\n");
@@ -168,7 +173,7 @@ void displayDeleteChoice(){
 }
 
 void performDelete(AddressBook *addressBook, int *searchResult, char *multipleMatchFoundName){
-    printf("First Search the Contact to Delete:\n");
+    printf("\nFind the Contact to Delete:\n");
     performSearch(addressBook, searchResult, multipleMatchFoundName);
 
     while(*searchResult == SEARCH_RESULT_NOT_FOUND){
@@ -180,7 +185,7 @@ void performDelete(AddressBook *addressBook, int *searchResult, char *multipleMa
     if(*searchResult == SERACH_RESULT_MULTIPLE_MATCHES){
         //Name Multiple found
         int deleteSerialNumber;
-        printf("\nMultiple Matches found, Please Enter the number of which contact to delete: ");
+        printf("\n[INFO] Multiple Matches found, Please Enter the number of which contact to delete: ");
         scanf("%d", &deleteSerialNumber);
         __fpurge(stdin);
         deleteContactIndex = findNthIndexOfName(addressBook, multipleMatchFoundName, deleteSerialNumber);
@@ -188,5 +193,15 @@ void performDelete(AddressBook *addressBook, int *searchResult, char *multipleMa
         deleteContactIndex = *searchResult;
     }
 
-    deleteContact(addressBook, deleteContactIndex);
+    char confirmDeleteOrNot;
+    printf("\nAre you sure to Delete the Selected Contact[Y/N]: ");
+    scanf("%c", &confirmDeleteOrNot);
+
+    if(tolower(confirmDeleteOrNot) == 'y') {
+        deleteContact(addressBook, deleteContactIndex);
+    } else {
+        printf("--------------------\n");
+        printf("Contact not deleted!\n");
+        printf("--------------------\n");
+    }
 }

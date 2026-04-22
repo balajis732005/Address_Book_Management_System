@@ -11,5 +11,7 @@ void deleteContact(AddressBook *addressBook, int deleteIndex){
 
     (addressBook->contactCount)--;
 
+    printf("-----------------------------\n");
     printf("Contact Deleted Successfully!\n");
+    printf("-----------------------------\n");
 }

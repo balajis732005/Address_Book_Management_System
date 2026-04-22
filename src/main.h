@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdio_ext.h>
 #include <string.h>
+#include <ctype.h>
 #include "contact.h"
 
 // Operation options
