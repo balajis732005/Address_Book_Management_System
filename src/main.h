@@ -9,7 +9,7 @@
 #define EDIT_CONTACT 3
 #define DELETE_CONTACT 4
 #define LIST_CONTACT 5
-#define EXIT 6
+#define SAVE_AND_EXIT 6
 
 #define SEARCH_RESULT_NOT_FOUND -1
 #define SERACH_RESULT_MULTIPLE_MATCHES -2
@@ -36,3 +36,5 @@ void deleteContact(AddressBook *, int); // DELETE
 void performDelete(AddressBook *, int *, char *); // PERFORM DELETE
 
 void listContacts(AddressBook *); // LIST
+
+void saveContacts(AddressBook *); // SAVE

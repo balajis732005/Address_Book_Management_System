@@ -38,29 +38,31 @@ int main(){
                 performSearch(&addressBook, &searchResult, multipleMatchFoundName);
                 break;
 
+            // Edit Contact
             case EDIT_CONTACT:
-                // Edit Contact
                 performEdit(&addressBook, &searchResult, multipleMatchFoundName);
                 break;
 
+            // Delete Contact
             case DELETE_CONTACT:
-                // Delete
                 performDelete(&addressBook, &searchResult, multipleMatchFoundName);
                 break;
 
+            // List Contacts
             case LIST_CONTACT:
-                // List
                 listContacts(&addressBook);
                 break;
 
-            case EXIT:
-                printf("\nThank You for using Address Book Management Tool!\n");
+            // Exit
+            case SAVE_AND_EXIT:
+                saveContacts(&addressBook);
+                printf("\nContacts Saved!\nThank You for using Address Book Management Tool!\n");
                 break;
 
             default:
                 printf("Invalid Choice! Please choose again.\n");
         }
-    } while(userChoice != EXIT);
+    } while(userChoice != SAVE_AND_EXIT);
 
     return 0;
 }
