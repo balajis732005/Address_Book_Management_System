@@ -10,6 +10,7 @@ int searchContact(AddressBook *addressBook, int searchOption, char *multipleMatc
             char nameToSearch[USERNAME_SIZE];
             printf("Enter the user name to search: ");
             scanf("%30[^\n]", nameToSearch);
+            __fpurge(stdin);
             searchResult = searchByName(addressBook, nameToSearch);
             if(searchResult == -2){
                 strcpy(multipleMatchFoundName, nameToSearch);
@@ -21,6 +22,7 @@ int searchContact(AddressBook *addressBook, int searchOption, char *multipleMatc
             char phoneNumberToSearch[USERPHONENUMBER_SIZE];
             printf("Enter the phone number to search: ");
             scanf("%10[^\n]", phoneNumberToSearch);
+            __fpurge(stdin);
             searchResult = searchByPhoneNumber(addressBook, phoneNumberToSearch);
             break;
 
@@ -29,6 +31,7 @@ int searchContact(AddressBook *addressBook, int searchOption, char *multipleMatc
             char emailIdToSerach[USEREMAILID_SIZE];
             printf("Enter the email id to search: ");
             scanf("%50[^\n]", emailIdToSerach);
+            __fpurge(stdin);
             searchResult = searchByEmailId(addressBook, emailIdToSerach);
             break;
 

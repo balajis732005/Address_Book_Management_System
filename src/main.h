@@ -28,9 +28,11 @@ int searchContact(AddressBook *, int, char *); // SEARCH
 void performSearch(AddressBook *, int *, char *); // PERFORM SEARCH
 
 int findNthIndexOfName(AddressBook *, char *,int); // GET INDEX IF MULTIPLE MATCHES FOUND
+
 void editContact(AddressBook *, int , int); // EDIT
 void performEdit(AddressBook *, int *, char *); // PERFORM EDIT
 
 void deleteContact(AddressBook *, int); // DELETE
+void performDelete(AddressBook *, int *, char *); // PERFORM DELETE
 
 void listContacts(AddressBook *); // LIST

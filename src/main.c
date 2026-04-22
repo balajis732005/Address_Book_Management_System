@@ -23,6 +23,7 @@ int main(){
 
     do {
         displayChoice();
+        userChoice = -1;
         scanf("%d", &userChoice);
         __fpurge(stdin);
 
@@ -44,26 +45,7 @@ int main(){
 
             case DELETE_CONTACT:
                 // Delete
-                printf("First Search the Contact to Delete:\n");
-                performSearch(&addressBook, &searchResult, multipleMatchFoundName);
-
-                while(searchResult == SEARCH_RESULT_NOT_FOUND){
-                    performSearch(&addressBook, &searchResult, multipleMatchFoundName);
-                }
-
-                int deleteContactIndex;
-
-                if(searchResult == SERACH_RESULT_MULTIPLE_MATCHES){
-                    //Name Multiple found
-                    int deleteSerialNumber;
-                    printf("\nMultiple Matches found, Please Enter the number of which contact to delete: ");
-                    scanf("%d", &deleteSerialNumber);
-                    deleteContactIndex = findNthIndexOfName(&addressBook, multipleMatchFoundName, deleteSerialNumber);
-                } else {
-                    deleteContactIndex = searchResult;
-                }
-
-                deleteContact(&addressBook, deleteContactIndex);
+                performDelete(&addressBook, &searchResult, multipleMatchFoundName);
                 break;
 
             case LIST_CONTACT:
@@ -103,6 +85,7 @@ void displaySearchChoice(){
 }
 
 void getSearchChoice(int *searchOption){
+    *searchOption = -1;
     scanf("%d", searchOption);
     __fpurge(stdin);
 }
@@ -144,12 +127,13 @@ void performEdit(AddressBook *addressBook, int *searchResult, char *multipleMatc
     int editSerialNumber;
         printf("\nMultiple Matches found, Please Enter the number of which contact to edit: ");
         scanf("%d", &editSerialNumber);
+        __fpurge(stdin);
         editContactIndex = findNthIndexOfName(addressBook, multipleMatchFoundName, editSerialNumber);
     } else {
         editContactIndex = *searchResult;
     }
 
-    int editMemberIndex;
+    int editMemberIndex = -1;
     displayEditChoice();
     scanf("%d", &editMemberIndex);
     __fpurge(stdin);
@@ -170,4 +154,28 @@ void displayDeleteChoice(){
     printf("2 - Delete by Phone Number\n");
     printf("3 - Delete by Email Id\n");
     printf("Enter your choice for delete: ");
+}
+
+void performDelete(AddressBook *addressBook, int *searchResult, char *multipleMatchFoundName){
+    printf("First Search the Contact to Delete:\n");
+    performSearch(addressBook, searchResult, multipleMatchFoundName);
+
+    while(*searchResult == SEARCH_RESULT_NOT_FOUND){
+        performSearch(addressBook, searchResult, multipleMatchFoundName);
+    }
+
+    int deleteContactIndex;
+
+    if(*searchResult == SERACH_RESULT_MULTIPLE_MATCHES){
+        //Name Multiple found
+        int deleteSerialNumber;
+        printf("\nMultiple Matches found, Please Enter the number of which contact to delete: ");
+        scanf("%d", &deleteSerialNumber);
+        __fpurge(stdin);
+        deleteContactIndex = findNthIndexOfName(addressBook, multipleMatchFoundName, deleteSerialNumber);
+    } else {
+        deleteContactIndex = *searchResult;
+    }
+
+    deleteContact(addressBook, deleteContactIndex);
 }
