@@ -1,3 +1,6 @@
+#ifndef MAIN_H
+#define MAIN_H
+
 #include <stdio.h>
 #include <stdio_ext.h>
 #include <string.h>
@@ -39,3 +42,5 @@ void listContacts(AddressBook *); // LIST
 
 void saveContacts(AddressBook *); // SAVE
 void loadContacts(AddressBook *); // LOAD
+
+#endif

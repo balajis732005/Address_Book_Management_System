@@ -1,3 +1,6 @@
+#ifndef CONTACT_H
+#define CONTACT_H
+
 // Maximum contacts to store
 #define MAX_CONTACT 100
 
@@ -17,3 +20,5 @@ typedef struct {
     Contact contactsBook[MAX_CONTACT];
     int contactCount; // No.of Contacts stored
 } AddressBook;
+
+#endif

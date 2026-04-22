@@ -1,3 +1,6 @@
+#ifndef EDIT_CONTACT_H
+#define EDIT_CONTACT_H
+
 #include <stdio.h>
 #include <stdio_ext.h>
 #include <string.h>
@@ -16,3 +19,5 @@ void getUpdatedUserEmailId(char *);
 int validateUserName(char *);
 int validateUserPhoneNumber(char *, AddressBook *);
 int validateUserEmailId(char *, AddressBook *);
+
+#endif

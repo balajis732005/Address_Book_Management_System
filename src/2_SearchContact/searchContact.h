@@ -1,3 +1,6 @@
+#ifndef SEARCH_CONTACT_H
+#define SEARCH_CONTACT_H
+
 #include <stdio.h>
 #include <stdio_ext.h>
 #include <string.h>
@@ -10,3 +13,5 @@
 int searchByName(AddressBook *, char *);
 int searchByPhoneNumber(AddressBook *, char *);
 int searchByEmailId(AddressBook *, char *);
+
+#endif
