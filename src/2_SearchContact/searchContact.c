@@ -7,8 +7,11 @@ int searchContact(AddressBook *addressBook, int searchOption, char *multipleMatc
     switch(searchOption){
         case SEARCH_BY_NAME:
             // name 
+            printf("------------------------\n");
+            printf("Selected Search By Name:\n");
+            printf("------------------------\n");
             char nameToSearch[USERNAME_SIZE];
-            printf("Enter the user name to search: ");
+            printf("\nEnter the user name to search: ");
             scanf("%30[^\n]", nameToSearch);
             __fpurge(stdin);
             searchResult = searchByName(addressBook, nameToSearch);
@@ -19,8 +22,11 @@ int searchContact(AddressBook *addressBook, int searchOption, char *multipleMatc
 
         case SEARCH_BY_PHONENUMBER:
             // Phone Number
+            printf("--------------------------------\n");
+            printf("Selected Search By Phone Number:\n");
+            printf("--------------------------------\n");
             char phoneNumberToSearch[USERPHONENUMBER_SIZE];
-            printf("Enter the phone number to search: ");
+            printf("\nEnter the phone number to search: ");
             scanf("%10[^\n]", phoneNumberToSearch);
             __fpurge(stdin);
             searchResult = searchByPhoneNumber(addressBook, phoneNumberToSearch);
@@ -28,8 +34,11 @@ int searchContact(AddressBook *addressBook, int searchOption, char *multipleMatc
 
         case SEARCH_BY_EMAILID:
             // Email Id
+            printf("----------------------------\n");
+            printf("Selected Search By Email ID:\n");
+            printf("----------------------------\n");
             char emailIdToSerach[USEREMAILID_SIZE];
-            printf("Enter the email id to search: ");
+            printf("\nEnter the email id to search: ");
             scanf("%50[^\n]", emailIdToSerach);
             __fpurge(stdin);
             searchResult = searchByEmailId(addressBook, emailIdToSerach);
@@ -45,7 +54,9 @@ int searchContact(AddressBook *addressBook, int searchOption, char *multipleMatc
 int searchByName(AddressBook *addressBook, char *nameToSerach){
     int iter = 0;
 
-    printf("Serached by name as \"%s\":\n", nameToSerach);
+    printf("-----------------------------\n");
+    printf("Result of Serached by name as \"%s\":\n", nameToSerach);
+    printf("-----------------------------\n");
 
     int matchCount = 0, foundIndex = -1;
 
@@ -66,7 +77,7 @@ int searchByName(AddressBook *addressBook, char *nameToSerach){
     }
 
     if(!matchCount){
-        printf("No Match Found with this name\n");
+        printf("\n[Result] No Match Found with this name\n");
         return -1;
     } else if(matchCount == 1){
         return foundIndex;
@@ -78,7 +89,9 @@ int searchByName(AddressBook *addressBook, char *nameToSerach){
 int searchByPhoneNumber(AddressBook *addressBook, char *phoneNumberToSerach){
     int iter = 0;
 
-    printf("Serached by phone number as \"%s\":\n", phoneNumberToSerach);
+    printf("-------------------------------------\n");
+    printf("Result of Serached by phone number as \"%s\":\n", phoneNumberToSerach);
+    printf("-------------------------------------\n");
 
     while(iter < addressBook->contactCount){
 
@@ -95,7 +108,7 @@ int searchByPhoneNumber(AddressBook *addressBook, char *phoneNumberToSerach){
     }
 
     if(iter == addressBook->contactCount){
-        printf("No Match Found with this phone number\n");
+        printf("\n[Result] No Match Found with this phone number\n");
         return -1;
     }
 
@@ -105,7 +118,9 @@ int searchByPhoneNumber(AddressBook *addressBook, char *phoneNumberToSerach){
 int searchByEmailId(AddressBook *addressBook, char *emailIdToSerach){
     int iter = 0;
 
-    printf("Serached by email id as \"%s\":\n", emailIdToSerach);
+    printf("---------------------------------\n");
+    printf("Result of Seaached by email id as \"%s\":\n", emailIdToSerach);
+    printf("---------------------------------\n");
 
     while(iter < addressBook->contactCount){
 
@@ -122,7 +137,7 @@ int searchByEmailId(AddressBook *addressBook, char *emailIdToSerach){
     }
 
     if(iter == addressBook->contactCount){
-        printf("No Match Found with this email\n");
+        printf("\n[Result] No Match Found with this email\n");
         return -1;
     }
 

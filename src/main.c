@@ -32,6 +32,9 @@ int main(){
 
             // Search Contact
             case SEARCH_CONTACT:
+                printf("------------------------\n");
+                printf("Search Contact Selected:\n");
+                printf("------------------------\n");
                 performSearch(&addressBook, &searchResult, multipleMatchFoundName);
                 break;
 
@@ -78,7 +81,9 @@ void displayChoice(){
 }
 
 void displaySearchChoice(){
-    printf("\nOptions to Search:\n");
+    printf("------------------\n");
+    printf("Options to Search:\n");
+    printf("------------------\n");
     printf("1 - Search by name\n");
     printf("2 - Search by phone number\n");
     printf("3 - Search by email id\n");
@@ -98,7 +103,7 @@ void performSearch(AddressBook *addressBook, int *searchResult, char *multipleMa
 
     *searchResult = searchContact(addressBook, searchOption, multipleMatchFoundName);
     while(*searchResult == SEARCH_RESULT_INVALID_OPTION){
-        printf("Invalid Search Choice! Please choose the search choice again.\n");
+        printf("\n[Error] Invalid Search Choice! Please choose the search choice again.\n");
         displaySearchChoice();
         getSearchChoice(&searchOption);
         *searchResult = searchContact(addressBook, searchOption, multipleMatchFoundName);
