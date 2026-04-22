@@ -56,6 +56,9 @@ int main(){
 
             // List Contacts
             case LIST_CONTACT:
+                printf("----------------------\n");
+                printf("Address Book Contacts:\n");
+                printf("----------------------\n");
                 listContacts(&addressBook);
                 break;
 

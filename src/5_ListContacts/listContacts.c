@@ -1,7 +1,6 @@
 #include "listContacts.h"
 
 void listContacts(AddressBook *addressBook){
-    printf("\nContact List: \n");
     int iter = 0;
 
     while(iter < addressBook->contactCount){
