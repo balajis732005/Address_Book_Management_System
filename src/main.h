@@ -16,17 +16,21 @@
 #define SEARCH_RESULT_INVALID_OPTION -3
 
 // Function prototypes
-void displayChoice(); // DISPLAY CHOICE
-void displaySearchChoice(); // DISPLAY SEARCH OPTIONS
-void displayEditChoice();
-void displayDeleteChoice();
+void displayChoice(); // DISPLAY CHOICE OF OPERATION
+void displaySearchChoice(); // DISPLAY SEARCH OPTION
+void displayEditChoice(); // DISPLAY EDIT OPTION
+void displayDeleteChoice(); // DISPLAY DELETE OPTION
 
 void createContact(AddressBook *); // CREATE
-void listContacts(AddressBook *); // LIST
-void performSearch(AddressBook *, int *, char *);
-void editContact(AddressBook *, int , int);
-void deleteContact(AddressBook *, int);
 
-void getSearchChoice(int *);
+void getSearchChoice(int *); // GET SEARCH CHOICE FROM USER
 int searchContact(AddressBook *, int, char *); // SEARCH
-int findNthIndexOfName(AddressBook *, char *,int);
+void performSearch(AddressBook *, int *, char *); // PERFORM SEARCH
+
+int findNthIndexOfName(AddressBook *, char *,int); // GET INDEX IF MULTIPLE MATCHES FOUND
+void editContact(AddressBook *, int , int); // EDIT
+void performEdit(AddressBook *, int *, char *); // PERFORM EDIT
+
+void deleteContact(AddressBook *, int); // DELETE
+
+void listContacts(AddressBook *); // LIST

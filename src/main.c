@@ -27,50 +27,19 @@ int main(){
         __fpurge(stdin);
 
         switch(userChoice){
+            // Create Contact
             case CREATE_CONTACT:
-                // Create
                 createContact(&addressBook);
                 break;
 
+            // Search Contact
             case SEARCH_CONTACT:
-                // Search
                 performSearch(&addressBook, &searchResult, multipleMatchFoundName);
                 break;
 
             case EDIT_CONTACT:
-                // Edit
-                printf("First Search the Contact to Edit:\n");
-                performSearch(&addressBook, &searchResult, multipleMatchFoundName);
-
-                while(searchResult == SEARCH_RESULT_NOT_FOUND){
-                    performSearch(&addressBook, &searchResult, multipleMatchFoundName);
-                }
-
-                int editContactIndex;
-
-                if(searchResult == SERACH_RESULT_MULTIPLE_MATCHES){
-                    //Name Multiple found
-                    int editSerialNumber;
-                    printf("\nMultiple Matches found, Please Enter the number of which contact to edit: ");
-                    scanf("%d", &editSerialNumber);
-                    editContactIndex = findNthIndexOfName(&addressBook, multipleMatchFoundName, editSerialNumber);
-                } else {
-                    editContactIndex = searchResult;
-                }
-
-                int editMemberIndex;
-                displayEditChoice();
-                scanf("%d", &editMemberIndex);
-                __fpurge(stdin);
-
-                while(editMemberIndex < 1 && editMemberIndex > 3){
-                    printf("Invalid Edit Option, please choose edit option again\n");
-                    displayEditChoice();
-                    scanf("%d", &editMemberIndex);
-                    __fpurge(stdin);
-                }
-
-                editContact(&addressBook, editContactIndex, editMemberIndex);
+                // Edit Contact
+                performEdit(&addressBook, &searchResult, multipleMatchFoundName);
                 break;
 
             case DELETE_CONTACT:
@@ -158,6 +127,41 @@ void displayEditChoice(){
     printf("2 - Edit by Phone Number\n");
     printf("3 - Edit by Email Id\n");
     printf("Enter your choice for edit: ");
+}
+
+void performEdit(AddressBook *addressBook, int *searchResult, char *multipleMatchFoundName){
+    printf("First Search the Contact to Edit:\n");
+    performSearch(addressBook, searchResult, multipleMatchFoundName);
+
+    while(*searchResult == SEARCH_RESULT_NOT_FOUND){
+        performSearch(addressBook, searchResult, multipleMatchFoundName);
+    }
+
+    int editContactIndex;
+
+    if(*searchResult == SERACH_RESULT_MULTIPLE_MATCHES){
+    //Name Multiple found
+    int editSerialNumber;
+        printf("\nMultiple Matches found, Please Enter the number of which contact to edit: ");
+        scanf("%d", &editSerialNumber);
+        editContactIndex = findNthIndexOfName(addressBook, multipleMatchFoundName, editSerialNumber);
+    } else {
+        editContactIndex = *searchResult;
+    }
+
+    int editMemberIndex;
+    displayEditChoice();
+    scanf("%d", &editMemberIndex);
+    __fpurge(stdin);
+
+    while(editMemberIndex < 1 && editMemberIndex > 3){
+        printf("Invalid Edit Option, please choose edit option again\n");
+        displayEditChoice();
+        scanf("%d", &editMemberIndex);
+        __fpurge(stdin);
+    }
+
+    editContact(addressBook, editContactIndex, editMemberIndex);
 }
 
 void displayDeleteChoice(){
