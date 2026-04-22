@@ -40,6 +40,9 @@ int main(){
 
             // Edit Contact
             case EDIT_CONTACT:
+                printf("----------------------\n");
+                printf("Edit Contact Selected:\n");
+                printf("----------------------\n");
                 performEdit(&addressBook, &searchResult, multipleMatchFoundName);
                 break;
 
@@ -111,15 +114,17 @@ void performSearch(AddressBook *addressBook, int *searchResult, char *multipleMa
 }
 
 void displayEditChoice(){
-    printf("\nOptions to Edit:\n");
-    printf("1 - Edit by Name\n");
-    printf("2 - Edit by Phone Number\n");
-    printf("3 - Edit by Email Id\n");
+    printf("----------------\n");
+    printf("Options to Edit:\n");
+    printf("----------------\n");
+    printf("1 - Edit the Name\n");
+    printf("2 - Edit the Phone Number\n");
+    printf("3 - Edit the Email Id\n");
     printf("Enter your choice for edit: ");
 }
 
 void performEdit(AddressBook *addressBook, int *searchResult, char *multipleMatchFoundName){
-    printf("First Search the Contact to Edit:\n");
+    printf("\nFind the Contact to Edit:\n");
     performSearch(addressBook, searchResult, multipleMatchFoundName);
 
     while(*searchResult == SEARCH_RESULT_NOT_FOUND){
@@ -131,7 +136,7 @@ void performEdit(AddressBook *addressBook, int *searchResult, char *multipleMatc
     if(*searchResult == SERACH_RESULT_MULTIPLE_MATCHES){
     //Name Multiple found
     int editSerialNumber;
-        printf("\nMultiple Matches found, Please Enter the number of which contact to edit: ");
+        printf("\n[INFO] Multiple Matches found, Please Enter the number of which contact to edit: ");
         scanf("%d", &editSerialNumber);
         __fpurge(stdin);
         editContactIndex = findNthIndexOfName(addressBook, multipleMatchFoundName, editSerialNumber);
@@ -145,7 +150,7 @@ void performEdit(AddressBook *addressBook, int *searchResult, char *multipleMatc
     __fpurge(stdin);
 
     while(editMemberIndex < 1 && editMemberIndex > 3){
-        printf("Invalid Edit Option, please choose edit option again\n");
+        printf("\n[Error] Invalid Edit Option, please choose edit option again\n");
         displayEditChoice();
         scanf("%d", &editMemberIndex);
         __fpurge(stdin);
