@@ -65,11 +65,16 @@ int main(){
             // Exit
             case SAVE_AND_EXIT:
                 saveContacts(&addressBook);
-                printf("\nContacts Saved!\nThank You for using Address Book Management Tool!\n");
+                printf("---------------\n");
+                printf("Contacts Saved!\n");
+                printf("---------------\n");
+                printf("-------------------------------------------------\n");
+                printf("Thank You for using Address Book Management Tool!\n");
+                printf("-------------------------------------------------\n");
                 break;
 
             default:
-                printf("Invalid Choice! Please choose again.\n");
+                printf("\n[Error] Invalid Choice! Please choose again.\n");
         }
     } while(userChoice != SAVE_AND_EXIT);
 
