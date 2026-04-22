@@ -9,7 +9,7 @@ void createContact(AddressBook *addressBook){
     getUserName(userName);
 
     while(!validateUserName(userName)){
-        printf("Invalid user name! Please give the valid name again.\n");
+        printf("\n[Error] Invalid user name! Please give the valid name again.\n");
         getUserName(userName);
     }
 
@@ -19,11 +19,11 @@ void createContact(AddressBook *addressBook){
     int phoneNumberValidationResult = validateUserPhoneNumber(userPhoneNumber, addressBook);
     while(phoneNumberValidationResult == -1 || phoneNumberValidationResult == 0){
         if(phoneNumberValidationResult == -1){
-            printf("Phone Number Alreday Exists!\n");
+            printf("\n[Error] Phone Number Alreday Exists!\n");
             getUserPhoneNumber(userPhoneNumber);
         }
         if(phoneNumberValidationResult == 0){
-            printf("Invalid phone number! Please give the phone number again.\n");
+            printf("\n[Error] Invalid phone number! Please give the phone number again.\n");
             getUserPhoneNumber(userPhoneNumber);
         }
         phoneNumberValidationResult = validateUserPhoneNumber(userPhoneNumber, addressBook);
@@ -35,11 +35,11 @@ void createContact(AddressBook *addressBook){
     int emailIdValidationResult = validateUserEmailId(userEmailId, addressBook);
     while(emailIdValidationResult == -1 || emailIdValidationResult == 0){
         if(emailIdValidationResult == -1){
-            printf("Email Id Alreday Exists!\n");
+            printf("\n[Error] Email Id Alreday Exists!\n");
             getUserEmailId(userEmailId);
         }
         if(emailIdValidationResult == 0){
-            printf("Invalid email id! Please give the email id again.\n");
+            printf("\n[Error] Invalid email id! Please give the email id again.\n");
             getUserEmailId(userEmailId);
         }
         emailIdValidationResult = validateUserEmailId(userEmailId, addressBook);
@@ -53,6 +53,10 @@ void createContact(AddressBook *addressBook){
 
     (addressBook->contactsBook)[addressBook->contactCount] = newContact;
     (addressBook->contactCount)++;
+
+    printf("------------------------------\n");
+    printf("Contact Created Successfully!!\n");
+    printf("------------------------------\n");
 
 }
 

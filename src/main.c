@@ -11,6 +11,10 @@ int main(){
     int searchResult;
     char multipleMatchFoundName[USERNAME_SIZE];
 
+    printf("---------------------------------------------------------------\n");
+    printf("Welcome to Address Book! Choice an option to perform operation:\n");
+    printf("---------------------------------------------------------------\n");
+
     do {
         displayChoice();
         userChoice = -1;
@@ -20,6 +24,9 @@ int main(){
         switch(userChoice){
             // Create Contact
             case CREATE_CONTACT:
+                printf("------------------------\n");
+                printf("Create Contact Selected:\n");
+                printf("------------------------\n");
                 createContact(&addressBook);
                 break;
 
@@ -58,7 +65,9 @@ int main(){
 }
 
 void displayChoice(){
-    printf("\nWelcome to Address Book! Choice an option to perform operation:\n");
+    printf("---------------------------\n");
+    printf("Operations on Address Book:\n");
+    printf("---------------------------\n");
     printf("1 - Create contact\n");
     printf("2 - Search contact\n");
     printf("3 - Edit contact\n");
