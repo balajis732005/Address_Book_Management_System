@@ -2,6 +2,8 @@
 
 int main(){
 
+    printf("Entered Main\n");
+
     AddressBook addressBook;
     addressBook.contactCount = 0;
 
