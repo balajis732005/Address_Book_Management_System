@@ -4,35 +4,18 @@ CC = gcc
 # Flags
 CFLAGS = -Wall -I./src
 
-# Find all .c files recursively inside src
+# All source files
 SRC = $(shell find src -name "*.c")
-
-# Object, Assembly, and Preprocessed files
-OBJ = $(SRC:.c=.o)
-ASM = $(SRC:.c=.s)
-PRE = $(SRC:.c=.i)
 
 # Output executable
 TARGET = addressBook.out
 
-# Default target
-run: $(PRE) $(ASM) $(OBJ)
-	$(CC) $(OBJ) -o $(TARGET)
+# Build and run target
+run:
+	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
 	@echo "Build complete -> $(TARGET)"
 
-# Generate .i files
-%.i: %.c
-	$(CC) $(CFLAGS) -E $< -o $@
-
-# Generate .s files
-%.s: %.c
-	$(CC) $(CFLAGS) -S $< -o $@
-
-# Generate .o files
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# Clean everything
+# Clean
 clean:
-	rm -f $(OBJ) $(ASM) $(PRE) $(TARGET)
+	rm -f $(TARGET)
 	@echo "Clean complete"
