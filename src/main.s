@@ -25,22 +25,27 @@
 	.string	"Delete Contact Selected:"
 .LC10:
 	.string	"Address Book Contacts:"
-.LC11:
-	.string	"---------------"
-.LC12:
-	.string	"Contacts Saved!"
 	.align 8
-.LC13:
+.LC11:
 	.string	"-------------------------------------------------"
 	.align 8
+.LC12:
+	.string	"Contacts Exported Successfully!\nExported Contacts: export_import/exportedContacts.csv"
+.LC13:
+	.string	"---------------"
 .LC14:
-	.string	"Thank You for using Address Book Management Tool!"
+	.string	"Contacts Saved!"
 	.align 8
 .LC15:
-	.string	"Contacts Exported Successfully!\nExported Contacts: export_import/exportedContacts.csv"
-	.align 8
+	.string	"\nAre you sure exit without saving [Y/N] : "
 .LC16:
+	.string	"%c"
+	.align 8
+.LC17:
 	.string	"\n[Error] Invalid Choice! Please choose again."
+	.align 8
+.LC18:
+	.string	"Thank You for using Address Book Management Tool!"
 	.text
 	.globl	main
 	.type	main, @function
@@ -77,7 +82,7 @@ main:
 	leaq	.LC1(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
-.L12:
+.L17:
 	movl	$0, %eax
 	call	displayChoice
 	movl	$-1, -9368(%rbp)
@@ -91,7 +96,7 @@ main:
 	movq	%rax, %rdi
 	call	__fpurge@PLT
 	movl	-9368(%rbp), %eax
-	cmpl	$7, %eax
+	cmpl	$9, %eax
 	ja	.L2
 	movl	%eax, %eax
 	leaq	0(,%rax,4), %rdx
@@ -106,6 +111,8 @@ main:
 	.align 4
 .L4:
 	.long	.L2-.L4
+	.long	.L12-.L4
+	.long	.L11-.L4
 	.long	.L10-.L4
 	.long	.L9-.L4
 	.long	.L8-.L4
@@ -114,7 +121,7 @@ main:
 	.long	.L5-.L4
 	.long	.L3-.L4
 	.text
-.L10:
+.L12:
 	leaq	.LC4(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
@@ -127,8 +134,8 @@ main:
 	leaq	-9360(%rbp), %rax
 	movq	%rax, %rdi
 	call	createContact@PLT
-	jmp	.L11
-.L9:
+	jmp	.L15
+.L11:
 	leaq	.LC4(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
@@ -144,8 +151,8 @@ main:
 	movq	%rcx, %rsi
 	movq	%rax, %rdi
 	call	performSearch
-	jmp	.L11
-.L8:
+	jmp	.L15
+.L10:
 	leaq	.LC7(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
@@ -161,8 +168,8 @@ main:
 	movq	%rcx, %rsi
 	movq	%rax, %rdi
 	call	performEdit
-	jmp	.L11
-.L7:
+	jmp	.L15
+.L9:
 	leaq	.LC4(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
@@ -178,8 +185,8 @@ main:
 	movq	%rcx, %rsi
 	movq	%rax, %rdi
 	call	performDelete
-	jmp	.L11
-.L6:
+	jmp	.L15
+.L8:
 	leaq	.LC7(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
@@ -192,11 +199,10 @@ main:
 	leaq	-9360(%rbp), %rax
 	movq	%rax, %rdi
 	call	listContacts@PLT
-	jmp	.L11
-.L5:
-	leaq	-9360(%rbp), %rax
-	movq	%rax, %rdi
-	call	saveContacts@PLT
+	jmp	.L15
+.L7:
+	movl	$0, %eax
+	call	exportContacts@PLT
 	leaq	.LC11(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
@@ -206,6 +212,16 @@ main:
 	leaq	.LC11(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
+	jmp	.L15
+.L6:
+	leaq	-9360(%rbp), %rax
+	movq	%rax, %rdi
+	call	performImportContact
+	jmp	.L15
+.L5:
+	leaq	-9360(%rbp), %rax
+	movq	%rax, %rdi
+	call	saveContacts@PLT
 	leaq	.LC13(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
@@ -215,34 +231,67 @@ main:
 	leaq	.LC13(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
-	jmp	.L11
+	jmp	.L15
 .L3:
-	movl	$0, %eax
-	call	exportContacts@PLT
-	leaq	.LC13(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
 	leaq	.LC15(%rip), %rax
 	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+	leaq	-9369(%rbp), %rax
+	movq	%rax, %rsi
+	leaq	.LC16(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	__isoc99_scanf@PLT
+	movzbl	-9369(%rbp), %eax
+	movsbl	%al, %eax
+	movl	%eax, %edi
+	call	tolower@PLT
+	cmpl	$110, %eax
+	jne	.L20
+	leaq	-9360(%rbp), %rax
+	movq	%rax, %rdi
+	call	saveContacts@PLT
+	leaq	.LC13(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC14(%rip), %rax
+	movq	%rax, %rdi
 	call	puts@PLT
 	leaq	.LC13(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
-	jmp	.L11
+	jmp	.L20
 .L2:
-	leaq	.LC16(%rip), %rax
+	leaq	.LC17(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
-.L11:
+	jmp	.L15
+.L20:
+	nop
+.L15:
 	movl	-9368(%rbp), %eax
-	cmpl	$6, %eax
-	jne	.L12
+	cmpl	$8, %eax
+	je	.L16
+	movl	-9368(%rbp), %eax
+	cmpl	$9, %eax
+	jne	.L17
+.L16:
+	leaq	.LC11(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC18(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC11(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
 	movl	$0, %eax
 	movq	-8(%rbp), %rdx
 	subq	%fs:40, %rdx
-	je	.L14
+	je	.L19
 	call	__stack_chk_fail@PLT
-.L14:
+.L19:
 	leave
 	.cfi_def_cfa 7, 8
 	ret
@@ -250,25 +299,29 @@ main:
 .LFE0:
 	.size	main, .-main
 	.section	.rodata
-.LC17:
-	.string	"---------------------------"
-.LC18:
-	.string	"Operations on Address Book:"
 .LC19:
-	.string	"1 - Create contact"
+	.string	"---------------------------"
 .LC20:
-	.string	"2 - Search contact"
+	.string	"Operations on Address Book:"
 .LC21:
-	.string	"3 - Edit contact"
+	.string	"1 - Create contact"
 .LC22:
-	.string	"4 - Delete contact"
+	.string	"2 - Search contact"
 .LC23:
-	.string	"5 - List all contacts"
+	.string	"3 - Edit contact"
 .LC24:
-	.string	"6 - Save & Exit"
+	.string	"4 - Delete contact"
 .LC25:
-	.string	"7 - Export Contacts"
+	.string	"5 - List all contacts"
 .LC26:
+	.string	"6 - Export Contacts"
+.LC27:
+	.string	"7 - Import Contacts"
+.LC28:
+	.string	"8 - Save & Exit"
+.LC29:
+	.string	"9 - Exit"
+.LC30:
 	.string	"Enter your choice: "
 	.text
 	.globl	displayChoice
@@ -282,19 +335,13 @@ displayChoice:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	leaq	.LC17(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC18(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC17(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
 	leaq	.LC19(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
 	leaq	.LC20(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC19(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
 	leaq	.LC21(%rip), %rax
@@ -314,6 +361,18 @@ displayChoice:
 	call	puts@PLT
 	leaq	.LC26(%rip), %rax
 	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC27(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC28(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC29(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC30(%rip), %rax
+	movq	%rax, %rdi
 	movl	$0, %eax
 	call	printf@PLT
 	nop
@@ -324,18 +383,18 @@ displayChoice:
 .LFE1:
 	.size	displayChoice, .-displayChoice
 	.section	.rodata
-.LC27:
-	.string	"------------------"
-.LC28:
-	.string	"Options to Search:"
-.LC29:
-	.string	"1 - Search by name"
-.LC30:
-	.string	"2 - Search by phone number"
 .LC31:
+	.string	"------------------"
+.LC32:
+	.string	"Options to Search:"
+.LC33:
+	.string	"1 - Search by name"
+.LC34:
+	.string	"2 - Search by phone number"
+.LC35:
 	.string	"3 - Search by email id"
 	.align 8
-.LC32:
+.LC36:
 	.string	"Enter your choice for search: "
 	.text
 	.globl	displaySearchChoice
@@ -349,25 +408,25 @@ displaySearchChoice:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	leaq	.LC27(%rip), %rax
+	leaq	.LC31(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
-	leaq	.LC28(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC27(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC29(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC30(%rip), %rax
+	leaq	.LC32(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
 	leaq	.LC31(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
-	leaq	.LC32(%rip), %rax
+	leaq	.LC33(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC34(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC35(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC36(%rip), %rax
 	movq	%rax, %rdi
 	movl	$0, %eax
 	call	printf@PLT
@@ -411,7 +470,7 @@ getSearchChoice:
 	.size	getSearchChoice, .-getSearchChoice
 	.section	.rodata
 	.align 8
-.LC33:
+.LC37:
 	.string	"\n[Error] Invalid Search Choice! Please choose the search choice again."
 	.text
 	.globl	performSearch
@@ -445,9 +504,9 @@ performSearch:
 	call	searchContact@PLT
 	movq	-32(%rbp), %rdx
 	movl	%eax, (%rdx)
-	jmp	.L19
-.L20:
-	leaq	.LC33(%rip), %rax
+	jmp	.L25
+.L26:
+	leaq	.LC37(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
 	movl	$0, %eax
@@ -463,17 +522,17 @@ performSearch:
 	call	searchContact@PLT
 	movq	-32(%rbp), %rdx
 	movl	%eax, (%rdx)
-.L19:
+.L25:
 	movq	-32(%rbp), %rax
 	movl	(%rax), %eax
 	cmpl	$-3, %eax
-	je	.L20
+	je	.L26
 	nop
 	movq	-8(%rbp), %rax
 	subq	%fs:40, %rax
-	je	.L21
+	je	.L27
 	call	__stack_chk_fail@PLT
-.L21:
+.L27:
 	leave
 	.cfi_def_cfa 7, 8
 	ret
@@ -481,17 +540,17 @@ performSearch:
 .LFE4:
 	.size	performSearch, .-performSearch
 	.section	.rodata
-.LC34:
-	.string	"----------------"
-.LC35:
-	.string	"Options to Edit:"
-.LC36:
-	.string	"1 - Edit the Name"
-.LC37:
-	.string	"2 - Edit the Phone Number"
 .LC38:
-	.string	"3 - Edit the Email Id"
+	.string	"----------------"
 .LC39:
+	.string	"Options to Edit:"
+.LC40:
+	.string	"1 - Edit the Name"
+.LC41:
+	.string	"2 - Edit the Phone Number"
+.LC42:
+	.string	"3 - Edit the Email Id"
+.LC43:
 	.string	"Enter your choice for edit: "
 	.text
 	.globl	displayEditChoice
@@ -505,25 +564,25 @@ displayEditChoice:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	leaq	.LC34(%rip), %rax
+	leaq	.LC38(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
-	leaq	.LC35(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC34(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC36(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC37(%rip), %rax
+	leaq	.LC39(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
 	leaq	.LC38(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
-	leaq	.LC39(%rip), %rax
+	leaq	.LC40(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC41(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC42(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC43(%rip), %rax
 	movq	%rax, %rdi
 	movl	$0, %eax
 	call	printf@PLT
@@ -535,13 +594,13 @@ displayEditChoice:
 .LFE5:
 	.size	displayEditChoice, .-displayEditChoice
 	.section	.rodata
-.LC40:
+.LC44:
 	.string	"\nFind the Contact to Edit:"
 	.align 8
-.LC41:
+.LC45:
 	.string	"\n[INFO] Multiple Matches found, Please Enter the number of which contact to edit: "
 	.align 8
-.LC42:
+.LC46:
 	.string	"\n[Error] Invalid Edit Option, please choose edit option again"
 	.text
 	.globl	performEdit
@@ -562,7 +621,7 @@ performEdit:
 	movq	%fs:40, %rax
 	movq	%rax, -8(%rbp)
 	xorl	%eax, %eax
-	leaq	.LC40(%rip), %rax
+	leaq	.LC44(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
 	movq	-40(%rbp), %rdx
@@ -571,24 +630,24 @@ performEdit:
 	movq	%rcx, %rsi
 	movq	%rax, %rdi
 	call	performSearch
-	jmp	.L24
-.L25:
+	jmp	.L30
+.L31:
 	movq	-40(%rbp), %rdx
 	movq	-32(%rbp), %rcx
 	movq	-24(%rbp), %rax
 	movq	%rcx, %rsi
 	movq	%rax, %rdi
 	call	performSearch
-.L24:
+.L30:
 	movq	-32(%rbp), %rax
 	movl	(%rax), %eax
 	cmpl	$-1, %eax
-	je	.L25
+	je	.L31
 	movq	-32(%rbp), %rax
 	movl	(%rax), %eax
 	cmpl	$-2, %eax
-	jne	.L26
-	leaq	.LC41(%rip), %rax
+	jne	.L32
+	leaq	.LC45(%rip), %rax
 	movq	%rax, %rdi
 	movl	$0, %eax
 	call	printf@PLT
@@ -608,12 +667,12 @@ performEdit:
 	movq	%rax, %rdi
 	call	findNthIndexOfName@PLT
 	movl	%eax, -12(%rbp)
-	jmp	.L27
-.L26:
+	jmp	.L33
+.L32:
 	movq	-32(%rbp), %rax
 	movl	(%rax), %eax
 	movl	%eax, -12(%rbp)
-.L27:
+.L33:
 	movl	$-1, -16(%rbp)
 	movl	$0, %eax
 	call	displayEditChoice
@@ -626,9 +685,9 @@ performEdit:
 	movq	stdin(%rip), %rax
 	movq	%rax, %rdi
 	call	__fpurge@PLT
-	jmp	.L28
-.L30:
-	leaq	.LC42(%rip), %rax
+	jmp	.L34
+.L36:
+	leaq	.LC46(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
 	movl	$0, %eax
@@ -642,14 +701,14 @@ performEdit:
 	movq	stdin(%rip), %rax
 	movq	%rax, %rdi
 	call	__fpurge@PLT
-.L28:
+.L34:
 	movl	-16(%rbp), %eax
 	testl	%eax, %eax
-	jg	.L29
+	jg	.L35
 	movl	-16(%rbp), %eax
 	cmpl	$3, %eax
-	jg	.L30
-.L29:
+	jg	.L36
+.L35:
 	movl	-16(%rbp), %edx
 	movl	-12(%rbp), %ecx
 	movq	-24(%rbp), %rax
@@ -659,9 +718,9 @@ performEdit:
 	nop
 	movq	-8(%rbp), %rax
 	subq	%fs:40, %rax
-	je	.L31
+	je	.L37
 	call	__stack_chk_fail@PLT
-.L31:
+.L37:
 	leave
 	.cfi_def_cfa 7, 8
 	ret
@@ -669,16 +728,16 @@ performEdit:
 .LFE6:
 	.size	performEdit, .-performEdit
 	.section	.rodata
-.LC43:
+.LC47:
 	.string	"Options to Delete:"
-.LC44:
+.LC48:
 	.string	"1 - Delete by Name"
-.LC45:
+.LC49:
 	.string	"2 - Delete by Phone Number"
-.LC46:
+.LC50:
 	.string	"3 - Delete by Email Id"
 	.align 8
-.LC47:
+.LC51:
 	.string	"Enter your choice for delete: "
 	.text
 	.globl	displayDeleteChoice
@@ -692,25 +751,25 @@ displayDeleteChoice:
 	.cfi_offset 6, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register 6
-	leaq	.LC27(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC43(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC27(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC44(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC45(%rip), %rax
-	movq	%rax, %rdi
-	call	puts@PLT
-	leaq	.LC46(%rip), %rax
+	leaq	.LC31(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
 	leaq	.LC47(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC31(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC48(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC49(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC50(%rip), %rax
+	movq	%rax, %rdi
+	call	puts@PLT
+	leaq	.LC51(%rip), %rax
 	movq	%rax, %rdi
 	movl	$0, %eax
 	call	printf@PLT
@@ -722,19 +781,17 @@ displayDeleteChoice:
 .LFE7:
 	.size	displayDeleteChoice, .-displayDeleteChoice
 	.section	.rodata
-.LC48:
+.LC52:
 	.string	"\nFind the Contact to Delete:"
 	.align 8
-.LC49:
+.LC53:
 	.string	"\n[INFO] Multiple Matches found, Please Enter the number of which contact to delete: "
 	.align 8
-.LC50:
+.LC54:
 	.string	"\nAre you sure to Delete the Selected Contact[Y/N]: "
-.LC51:
-	.string	"%c"
-.LC52:
+.LC55:
 	.string	"--------------------"
-.LC53:
+.LC56:
 	.string	"Contact not deleted!"
 	.text
 	.globl	performDelete
@@ -755,7 +812,7 @@ performDelete:
 	movq	%fs:40, %rax
 	movq	%rax, -8(%rbp)
 	xorl	%eax, %eax
-	leaq	.LC48(%rip), %rax
+	leaq	.LC52(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
 	movq	-40(%rbp), %rdx
@@ -764,24 +821,24 @@ performDelete:
 	movq	%rcx, %rsi
 	movq	%rax, %rdi
 	call	performSearch
-	jmp	.L34
-.L35:
+	jmp	.L40
+.L41:
 	movq	-40(%rbp), %rdx
 	movq	-32(%rbp), %rcx
 	movq	-24(%rbp), %rax
 	movq	%rcx, %rsi
 	movq	%rax, %rdi
 	call	performSearch
-.L34:
+.L40:
 	movq	-32(%rbp), %rax
 	movl	(%rax), %eax
 	cmpl	$-1, %eax
-	je	.L35
+	je	.L41
 	movq	-32(%rbp), %rax
 	movl	(%rax), %eax
 	cmpl	$-2, %eax
-	jne	.L36
-	leaq	.LC49(%rip), %rax
+	jne	.L42
+	leaq	.LC53(%rip), %rax
 	movq	%rax, %rdi
 	movl	$0, %eax
 	call	printf@PLT
@@ -801,19 +858,19 @@ performDelete:
 	movq	%rax, %rdi
 	call	findNthIndexOfName@PLT
 	movl	%eax, -12(%rbp)
-	jmp	.L37
-.L36:
+	jmp	.L43
+.L42:
 	movq	-32(%rbp), %rax
 	movl	(%rax), %eax
 	movl	%eax, -12(%rbp)
-.L37:
-	leaq	.LC50(%rip), %rax
+.L43:
+	leaq	.LC54(%rip), %rax
 	movq	%rax, %rdi
 	movl	$0, %eax
 	call	printf@PLT
 	leaq	-16(%rbp), %rax
 	movq	%rax, %rsi
-	leaq	.LC51(%rip), %rax
+	leaq	.LC16(%rip), %rax
 	movq	%rax, %rdi
 	movl	$0, %eax
 	call	__isoc99_scanf@PLT
@@ -822,36 +879,86 @@ performDelete:
 	movl	%eax, %edi
 	call	tolower@PLT
 	cmpl	$121, %eax
-	jne	.L38
+	jne	.L44
 	movl	-12(%rbp), %edx
 	movq	-24(%rbp), %rax
 	movl	%edx, %esi
 	movq	%rax, %rdi
 	call	deleteContact@PLT
-	jmp	.L41
-.L38:
-	leaq	.LC52(%rip), %rax
+	jmp	.L47
+.L44:
+	leaq	.LC55(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
-	leaq	.LC53(%rip), %rax
+	leaq	.LC56(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
-	leaq	.LC52(%rip), %rax
+	leaq	.LC55(%rip), %rax
 	movq	%rax, %rdi
 	call	puts@PLT
-.L41:
+.L47:
 	nop
 	movq	-8(%rbp), %rax
 	subq	%fs:40, %rax
-	je	.L40
+	je	.L46
 	call	__stack_chk_fail@PLT
-.L40:
+.L46:
 	leave
 	.cfi_def_cfa 7, 8
 	ret
 	.cfi_endproc
 .LFE8:
 	.size	performDelete, .-performDelete
+	.section	.rodata
+	.align 8
+.LC57:
+	.string	"\nEnter the File Path of Contacts to be Imported: "
+.LC58:
+	.string	"%150[^\n]"
+	.text
+	.globl	performImportContact
+	.type	performImportContact, @function
+performImportContact:
+.LFB9:
+	.cfi_startproc
+	endbr64
+	pushq	%rbp
+	.cfi_def_cfa_offset 16
+	.cfi_offset 6, -16
+	movq	%rsp, %rbp
+	.cfi_def_cfa_register 6
+	subq	$176, %rsp
+	movq	%rdi, -168(%rbp)
+	movq	%fs:40, %rax
+	movq	%rax, -8(%rbp)
+	xorl	%eax, %eax
+	leaq	.LC57(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	printf@PLT
+	leaq	-160(%rbp), %rax
+	movq	%rax, %rsi
+	leaq	.LC58(%rip), %rax
+	movq	%rax, %rdi
+	movl	$0, %eax
+	call	__isoc99_scanf@PLT
+	movq	-168(%rbp), %rdx
+	leaq	-160(%rbp), %rax
+	movq	%rdx, %rsi
+	movq	%rax, %rdi
+	call	importContacts@PLT
+	nop
+	movq	-8(%rbp), %rax
+	subq	%fs:40, %rax
+	je	.L49
+	call	__stack_chk_fail@PLT
+.L49:
+	leave
+	.cfi_def_cfa 7, 8
+	ret
+	.cfi_endproc
+.LFE9:
+	.size	performImportContact, .-performImportContact
 	.ident	"GCC: (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
 	.section	.note.GNU-stack,"",@progbits
 	.section	.note.gnu.property,"a"

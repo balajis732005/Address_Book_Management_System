@@ -14,7 +14,9 @@
 #define DELETE_CONTACT 4
 #define LIST_CONTACT 5
 #define EXPORT_CONTACTS 6
-#define SAVE_AND_EXIT 7
+#define IMPORT_CONTACTS 7
+#define SAVE_AND_EXIT 8
+#define EXIT 9
 
 #define SEARCH_RESULT_NOT_FOUND -1
 #define SERACH_RESULT_MULTIPLE_MATCHES -2
@@ -46,5 +48,7 @@ void saveContacts(AddressBook *); // SAVE
 void loadContacts(AddressBook *); // LOAD
 
 void exportContacts(); // EXPORT CONTACTS
+void performImportContact(AddressBook *); // PERFORM IMPORT CONTACTS
+void importContacts(char *, AddressBook *); // IMPORT CONTACTS
 
 #endif

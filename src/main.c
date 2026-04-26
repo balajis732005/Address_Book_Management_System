@@ -72,21 +72,38 @@ int main(){
                 printf("-------------------------------------------------\n");
                 break;
             
+            case IMPORT_CONTACTS:
+                performImportContact(&addressBook);
+                break;
+            
             // Save and Exit
             case SAVE_AND_EXIT:
                 saveContacts(&addressBook);
                 printf("---------------\n");
                 printf("Contacts Saved!\n");
                 printf("---------------\n");
-                printf("-------------------------------------------------\n");
-                printf("Thank You for using Address Book Management Tool!\n");
-                printf("-------------------------------------------------\n");
+                break;
+            
+            case EXIT:
+                printf("\nAre you sure exit without saving [Y/N] : ");
+                char closeOption;
+                scanf("%c", &closeOption);
+                if(tolower(closeOption) == 'n'){
+                    saveContacts(&addressBook);
+                    printf("---------------\n");
+                    printf("Contacts Saved!\n");
+                    printf("---------------\n");
+                }
                 break;
 
             default:
                 printf("\n[Error] Invalid Choice! Please choose again.\n");
         }
-    } while(userChoice != SAVE_AND_EXIT);
+    } while((userChoice != SAVE_AND_EXIT) && (userChoice != EXIT));
+
+    printf("-------------------------------------------------\n");
+    printf("Thank You for using Address Book Management Tool!\n");
+    printf("-------------------------------------------------\n");
 
     return 0;
 }
@@ -101,7 +118,9 @@ void displayChoice(){
     printf("4 - Delete contact\n");
     printf("5 - List all contacts\n");
     printf("6 - Export Contacts\n");
-    printf("7 - Save & Exit\n");
+    printf("7 - Import Contacts\n");
+    printf("8 - Save & Exit\n");
+    printf("9 - Exit\n");
     printf("Enter your choice: ");
 }
 
@@ -223,4 +242,12 @@ void performDelete(AddressBook *addressBook, int *searchResult, char *multipleMa
         printf("Contact not deleted!\n");
         printf("--------------------\n");
     }
+}
+
+void performImportContact(AddressBook *addressBook){
+    char importContactsFilePath[151];
+    printf("\nEnter the File Path of Contacts to be Imported: ");
+    scanf("%150[^\n]", importContactsFilePath);
+
+    importContacts(importContactsFilePath, addressBook);
 }

@@ -814,10 +814,30 @@ extern int __overflow (FILE *, int);
 # 983 "/usr/include/stdio.h" 3 4
 
 # 5 "src/7_exportImportContacts/exportImportContacts.h" 2
+# 1 "./src/contact.h" 1
+# 12 "./src/contact.h"
+
+# 12 "./src/contact.h"
+typedef struct {
+    char userName[31];
+    char userPhoneNumber[11];
+    char userEmailId[51];
+} Contact;
+
+
+typedef struct {
+    Contact contactsBook[100];
+    int contactCount;
+} AddressBook;
+# 6 "src/7_exportImportContacts/exportImportContacts.h" 2
+
+int validateUserName(char *);
+int validateUserPhoneNumber(char *, AddressBook *);
+int validateUserEmailId(char *, AddressBook *);
+
+void loadContacts(AddressBook *);
 # 2 "src/7_exportImportContacts/exportImportContacts.c" 2
 
-
-# 3 "src/7_exportImportContacts/exportImportContacts.c"
 void exportContacts(){
     FILE *srcFp = fopen("contacts/contacts.csv", "r");
     if(srcFp == 
@@ -842,4 +862,103 @@ void exportContacts(){
 
     fclose(srcFp);
     fclose(destFp);
+}
+
+void importContacts(char *importContactsFilePath, AddressBook *addressBook){
+
+    FILE *importContactsFp = fopen(importContactsFilePath, "r");
+    if (importContactsFp == 
+# 24 "src/7_exportImportContacts/exportImportContacts.c" 3 4
+                           ((void *)0)
+# 24 "src/7_exportImportContacts/exportImportContacts.c"
+                               ) {
+        perror("Error opening importContacts.csv file");
+        return;
+    }
+
+    FILE *contactsFp = fopen("contacts/contacts.csv", "r+");
+    if (contactsFp == 
+# 30 "src/7_exportImportContacts/exportImportContacts.c" 3 4
+                     ((void *)0)
+# 30 "src/7_exportImportContacts/exportImportContacts.c"
+                         ) {
+        perror("Error opening contacts.csv file");
+        fclose(importContactsFp);
+        return;
+    }
+
+    printf("\nStarted Importing Contacts........\n");
+
+    int previousContactsCount = 0;
+
+    fseek(contactsFp, 0, 
+# 40 "src/7_exportImportContacts/exportImportContacts.c" 3 4
+                        0
+# 40 "src/7_exportImportContacts/exportImportContacts.c"
+                                );
+    fscanf(contactsFp, "Total Contacts,%d\n", &previousContactsCount);
+
+    fseek(contactsFp, 0, 
+# 43 "src/7_exportImportContacts/exportImportContacts.c" 3 4
+                        2
+# 43 "src/7_exportImportContacts/exportImportContacts.c"
+                                );
+
+    int noOfContactsImported = 0;
+
+    char userName[31];
+    char userPhoneNumber[11];
+    char userEmailId[51];
+
+    while (fscanf(importContactsFp, "%[^,],%[^,],%s\n",
+                  userName, userPhoneNumber, userEmailId) == 3)
+    {
+        if (!validateUserName(userName)) {
+            printf("[NOT IMPORTED] Invalid Name : %s\n", userName);
+            continue;
+        }
+
+        int phoneNumberValidationResult =
+            validateUserPhoneNumber(userPhoneNumber, addressBook);
+
+        if (phoneNumberValidationResult == -1) {
+            printf("[NOT IMPORTED] Phone Number Already Exists : %s\n", userPhoneNumber);
+            continue;
+        }
+
+        if (phoneNumberValidationResult == 0) {
+            printf("[NOT IMPORTED] Invalid Phone Number : %s\n", userPhoneNumber);
+            continue;
+        }
+
+        int emailIdValidationResult =
+            validateUserEmailId(userEmailId, addressBook);
+
+        if (emailIdValidationResult == -1) {
+            printf("[NOT IMPORTED] EmailID Already Exists : %s\n", userEmailId);
+            continue;
+        }
+
+        if (emailIdValidationResult == 0) {
+            printf("[NOT IMPORTED] Invalid EmailID : %s\n", userEmailId);
+            continue;
+        }
+
+        fprintf(contactsFp, "%s,%s,%s\n",
+                userName, userPhoneNumber, userEmailId);
+
+        noOfContactsImported++;
+    }
+
+    int newTotal = previousContactsCount + noOfContactsImported;
+
+    rewind(contactsFp);
+    fprintf(contactsFp, "Total Contacts,%d\n", newTotal);
+
+    printf("\nImported %d Contacts!\n\n", noOfContactsImported);
+
+    fclose(importContactsFp);
+    fclose(contactsFp);
+
+    loadContacts(addressBook);
 }
