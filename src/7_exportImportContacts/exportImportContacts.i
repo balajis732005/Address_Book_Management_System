@@ -1,10 +1,10 @@
-# 0 "src/6_SaveContacts/saveContacts.c"
+# 0 "src/7_exportImportContacts/exportImportContacts.c"
 # 0 "<built-in>"
 # 0 "<command-line>"
 # 1 "/usr/include/stdc-predef.h" 1 3 4
 # 0 "<command-line>" 2
-# 1 "src/6_SaveContacts/saveContacts.c"
-# 1 "src/6_SaveContacts/saveContacts.h" 1
+# 1 "src/7_exportImportContacts/exportImportContacts.c"
+# 1 "src/7_exportImportContacts/exportImportContacts.h" 1
 
 
 
@@ -813,62 +813,33 @@ extern int __uflow (FILE *);
 extern int __overflow (FILE *, int);
 # 983 "/usr/include/stdio.h" 3 4
 
-# 5 "src/6_SaveContacts/saveContacts.h" 2
-# 1 "src/6_SaveContacts/../contact.h" 1
-# 12 "src/6_SaveContacts/../contact.h"
-
-# 12 "src/6_SaveContacts/../contact.h"
-typedef struct {
-    char userName[31];
-    char userPhoneNumber[11];
-    char userEmailId[51];
-} Contact;
+# 5 "src/7_exportImportContacts/exportImportContacts.h" 2
+# 2 "src/7_exportImportContacts/exportImportContacts.c" 2
 
 
-typedef struct {
-    Contact contactsBook[100];
-    int contactCount;
-} AddressBook;
-# 6 "src/6_SaveContacts/saveContacts.h" 2
-# 2 "src/6_SaveContacts/saveContacts.c" 2
-
-void loadContacts(AddressBook *addressBook){
-    FILE *contactsFp = fopen("contacts/contacts.csv", "r");
-
-    if (contactsFp == 
-# 6 "src/6_SaveContacts/saveContacts.c" 3 4
-                     ((void *)0)
-# 6 "src/6_SaveContacts/saveContacts.c"
-                         ) {
+# 3 "src/7_exportImportContacts/exportImportContacts.c"
+void exportContacts(){
+    FILE *srcFp = fopen("contacts/contacts.csv", "r");
+    if(srcFp == 
+# 5 "src/7_exportImportContacts/exportImportContacts.c" 3 4
+               ((void *)0)
+# 5 "src/7_exportImportContacts/exportImportContacts.c"
+                   ){
         perror("\n----Error opening contacts.csv file----\n");
         return;
     }
 
-    fscanf(contactsFp, "Total Contacts,%d\n", &(addressBook->contactCount));
-    fscanf(contactsFp, "Name,PhoneNumber,EmailID\n");
+    FILE *destFp = fopen("export_import/exportedContacts.csv", "w");
 
-    for(int iter = 0; iter < addressBook->contactCount; iter++){
-        fscanf(contactsFp, "%[^,],%[^,],%s\n",
-               addressBook->contactsBook[iter].userName,
-               addressBook->contactsBook[iter].userPhoneNumber,
-               addressBook->contactsBook[iter].userEmailId);
+    char ch;
+    while((ch = getc(srcFp)) != 
+# 13 "src/7_exportImportContacts/exportImportContacts.c" 3 4
+                               (-1)
+# 13 "src/7_exportImportContacts/exportImportContacts.c"
+                                  ){
+        putc(ch, destFp);
     }
 
-    fclose(contactsFp);
-}
-
-void saveContacts(AddressBook *addressBook){
-    FILE *contactsFp = fopen("contacts/contacts.csv", "w");
-
-    fprintf(contactsFp, "Total Contacts,%d\n", addressBook->contactCount);
-    fprintf(contactsFp, "Name,PhoneNumber,EmailID\n");
-
-    for(int iter = 0; iter < addressBook->contactCount; iter++){
-        fprintf(contactsFp, "%s,%s,%s\n",
-                addressBook->contactsBook[iter].userName,
-                addressBook->contactsBook[iter].userPhoneNumber,
-                addressBook->contactsBook[iter].userEmailId);
-    }
-
-    fclose(contactsFp);
+    fclose(srcFp);
+    fclose(destFp);
 }

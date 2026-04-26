@@ -1321,7 +1321,7 @@ typedef struct {
     int contactCount;
 } AddressBook;
 # 9 "src/main.h" 2
-# 23 "src/main.h"
+# 24 "src/main.h"
 void displayChoice();
 void displaySearchChoice();
 void displayEditChoice();
@@ -1345,6 +1345,8 @@ void listContacts(AddressBook *);
 
 void saveContacts(AddressBook *);
 void loadContacts(AddressBook *);
+
+void exportContacts();
 # 2 "src/main.c" 2
 
 int main(){
@@ -1426,6 +1428,14 @@ int main(){
                 printf("-------------------------------------------------\n");
                 break;
 
+
+            case 7:
+                exportContacts();
+                printf("-------------------------------------------------\n");
+                printf("Contacts Exported Successfully!\nExported Contacts: export_import/exportedContacts.csv\n");
+                printf("-------------------------------------------------\n");
+                break;
+
             default:
                 printf("\n[Error] Invalid Choice! Please choose again.\n");
         }
@@ -1444,6 +1454,7 @@ void displayChoice(){
     printf("4 - Delete contact\n");
     printf("5 - List all contacts\n");
     printf("6 - Save & Exit\n");
+    printf("7 - Export Contacts\n");
     printf("Enter your choice: ");
 }
 
@@ -1461,9 +1472,9 @@ void getSearchChoice(int *searchOption){
     *searchOption = -1;
     scanf("%d", searchOption);
     __fpurge(
-# 112 "src/main.c" 3 4
+# 121 "src/main.c" 3 4
             stdin
-# 112 "src/main.c"
+# 121 "src/main.c"
                  );
 }
 
@@ -1507,9 +1518,9 @@ void performEdit(AddressBook *addressBook, int *searchResult, char *multipleMatc
         printf("\n[INFO] Multiple Matches found, Please Enter the number of which contact to edit: ");
         scanf("%d", &editSerialNumber);
         __fpurge(
-# 154 "src/main.c" 3 4
+# 163 "src/main.c" 3 4
                 stdin
-# 154 "src/main.c"
+# 163 "src/main.c"
                      );
         editContactIndex = findNthIndexOfName(addressBook, multipleMatchFoundName, editSerialNumber);
     } else {
@@ -1520,9 +1531,9 @@ void performEdit(AddressBook *addressBook, int *searchResult, char *multipleMatc
     displayEditChoice();
     scanf("%d", &editMemberIndex);
     __fpurge(
-# 163 "src/main.c" 3 4
+# 172 "src/main.c" 3 4
             stdin
-# 163 "src/main.c"
+# 172 "src/main.c"
                  );
 
     while(editMemberIndex < 1 && editMemberIndex > 3){
@@ -1530,9 +1541,9 @@ void performEdit(AddressBook *addressBook, int *searchResult, char *multipleMatc
         displayEditChoice();
         scanf("%d", &editMemberIndex);
         __fpurge(
-# 169 "src/main.c" 3 4
+# 178 "src/main.c" 3 4
                 stdin
-# 169 "src/main.c"
+# 178 "src/main.c"
                      );
     }
 
@@ -1565,9 +1576,9 @@ void performDelete(AddressBook *addressBook, int *searchResult, char *multipleMa
         printf("\n[INFO] Multiple Matches found, Please Enter the number of which contact to delete: ");
         scanf("%d", &deleteSerialNumber);
         __fpurge(
-# 200 "src/main.c" 3 4
+# 209 "src/main.c" 3 4
                 stdin
-# 200 "src/main.c"
+# 209 "src/main.c"
                      );
         deleteContactIndex = findNthIndexOfName(addressBook, multipleMatchFoundName, deleteSerialNumber);
     } else {

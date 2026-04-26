@@ -63,8 +63,16 @@ int main(){
                 printf("----------------------\n");
                 listContacts(&addressBook);
                 break;
-
-            // Exit
+            
+            // Export Contacts
+            case EXPORT_CONTACTS:
+                exportContacts();
+                printf("-------------------------------------------------\n");
+                printf("Contacts Exported Successfully!\nExported Contacts: export_import/exportedContacts.csv\n");
+                printf("-------------------------------------------------\n");
+                break;
+            
+            // Save and Exit
             case SAVE_AND_EXIT:
                 saveContacts(&addressBook);
                 printf("---------------\n");
@@ -92,7 +100,8 @@ void displayChoice(){
     printf("3 - Edit contact\n");
     printf("4 - Delete contact\n");
     printf("5 - List all contacts\n");
-    printf("6 - Save & Exit\n");
+    printf("6 - Export Contacts\n");
+    printf("7 - Save & Exit\n");
     printf("Enter your choice: ");
 }
 

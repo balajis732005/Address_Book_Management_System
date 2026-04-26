@@ -7,7 +7,7 @@
 	.string	"contacts/contacts.csv"
 	.align 8
 .LC2:
-	.string	"\n----Error opening contacts file----\n"
+	.string	"\n----Error opening contacts.csv file----\n"
 .LC3:
 	.string	"Total Contacts,%d\n"
 .LC4:
@@ -139,13 +139,6 @@ saveContacts:
 	movq	%rax, %rdi
 	call	fopen@PLT
 	movq	%rax, -8(%rbp)
-	cmpq	$0, -8(%rbp)
-	jne	.L7
-	leaq	.LC2(%rip), %rax
-	movq	%rax, %rdi
-	call	perror@PLT
-	jmp	.L6
-.L7:
 	movq	-24(%rbp), %rax
 	movl	9300(%rax), %edx
 	movq	-8(%rbp), %rax
@@ -162,8 +155,8 @@ saveContacts:
 	movq	%rax, %rdi
 	call	fwrite@PLT
 	movl	$0, -12(%rbp)
-	jmp	.L9
-.L10:
+	jmp	.L7
+.L8:
 	movl	-12(%rbp), %eax
 	movslq	%eax, %rdx
 	movq	%rdx, %rax
@@ -205,15 +198,15 @@ saveContacts:
 	movl	$0, %eax
 	call	fprintf@PLT
 	addl	$1, -12(%rbp)
-.L9:
+.L7:
 	movq	-24(%rbp), %rax
 	movl	9300(%rax), %eax
 	cmpl	%eax, -12(%rbp)
-	jl	.L10
+	jl	.L8
 	movq	-8(%rbp), %rax
 	movq	%rax, %rdi
 	call	fclose@PLT
-.L6:
+	nop
 	leave
 	.cfi_def_cfa 7, 8
 	ret

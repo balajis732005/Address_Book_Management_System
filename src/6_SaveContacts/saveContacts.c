@@ -4,7 +4,7 @@ void loadContacts(AddressBook *addressBook){
     FILE *contactsFp = fopen("contacts/contacts.csv", "r");
 
     if (contactsFp == NULL) {
-        perror("\n----Error opening contacts file----\n");
+        perror("\n----Error opening contacts.csv file----\n");
         return;
     }
 
@@ -23,11 +23,6 @@ void loadContacts(AddressBook *addressBook){
 
 void saveContacts(AddressBook *addressBook){
     FILE *contactsFp = fopen("contacts/contacts.csv", "w");
-
-    if (contactsFp == NULL) {
-        perror("\n----Error opening contacts file----\n");
-        return;
-    }
 
     fprintf(contactsFp, "Total Contacts,%d\n", addressBook->contactCount);
     fprintf(contactsFp, "Name,PhoneNumber,EmailID\n");
